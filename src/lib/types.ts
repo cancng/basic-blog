@@ -27,3 +27,12 @@ export interface Comment {
   authorName: string;
   body: string;
 }
+
+export interface Page {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  slug: string;
+  content: string;
+}

@@ -4,13 +4,19 @@ import { useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { GET_CATEGORIES } from '../lib/queries/category';
-import { Category } from '../lib/types';
+import { Category, Page } from '../lib/types';
+import { GetServerSideProps } from 'next';
+import { initializeApollo } from '../lib/apollo';
+import { GET_PAGES } from '../lib/queries/page';
 
 export default function Navbar() {
   const { data: categoriesData, loading: categoriesLoading } = useQuery<{
     categories: Category[];
   }>(GET_CATEGORIES);
   const [showCategories, setShowCategories] = useState(false);
+
+  const { data: pagesData } = useQuery<{ pages: Page[] }>(GET_PAGES);
+  console.log('pagesdata 🐤', pagesData);
 
   return (
     <nav className='z-10 flex w-full py-2 bg-white shadow'>
@@ -24,7 +30,7 @@ export default function Navbar() {
               className='p-1 rounded-md cursor-pointer select-none hover:bg-blue-200'
               onClick={() => setShowCategories((prev) => !prev)}
             >
-              Kategoriler{' '}
+              Kategoriler
               {showCategories ? (
                 <IoIosArrowUp className='inline' />
               ) : (
@@ -53,10 +59,28 @@ export default function Navbar() {
         </div>
 
         <div className='space-x-4'>
-          <span>Link 3</span>
-          <span>Link 4</span>
+          {pagesData &&
+            pagesData.pages.map((page) => (
+              <Link href={`/page/${page.slug}`} key={page.id}>
+                <a>{page.title}</a>
+              </Link>
+            ))}
         </div>
       </div>
     </nav>
   );
 }
+
+/* export const getServerSideProps: GetServerSideProps = async () => {
+  const apollo = initializeApollo();
+  const res = await apollo.query({
+    query: GET_PAGES,
+  });
+  // console.log(res.data);
+  
+  return {
+    props: {
+      pages: res,
+    },
+  };
+}; */
