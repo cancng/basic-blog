@@ -1,12 +1,13 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { IoWarningOutline } from 'react-icons/io5';
 import PostCard from '../components/PostCard';
 import Template from '../components/Template';
 import { initializeApollo } from '../lib/apollo';
 import { GET_POSTS } from '../lib/queries/post';
 import { Post } from '../lib/types';
 
-export default function Home({ data }) {
+export default function Home({ data }: { data: { posts: Post[] } }) {
   return (
     <Template>
       <Head>
@@ -26,9 +27,13 @@ export default function Home({ data }) {
           impedit est fugit dicta beatae
         </p>
         <div className='grid gap-4 mt-6 md:grid-cols-2'>
-          {data.posts.map((post: Post) => (
-            <PostCard post={post} key={post.id} />
-          ))}
+          {data.posts.length > 0 ? (
+            data.posts.map((post) => <PostCard post={post} key={post.id} />)
+          ) : (
+            <div className='flex items-center col-span-2 p-2 my-6 bg-yellow-400 rounded'>
+              <IoWarningOutline className='mr-1' size='24' /> hic yazi yok
+            </div>
+          )}
         </div>
       </main>
     </Template>

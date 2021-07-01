@@ -46,12 +46,14 @@ export default function Navbar() {
                   <div className='flex'>
                     <PuffLoader size='24' />
                   </div>
-                ) : (
+                ) : categoriesData.categories.length > 0 ? (
                   categoriesData.categories.map((category) => (
                     <Link href={`/category/${category.slug}`} key={category.id}>
                       <a className='block hover:underline'>{category.title}</a>
                     </Link>
                   ))
+                ) : (
+                  <span>Hiç kategori yok</span>
                 )}
               </div>
             )}

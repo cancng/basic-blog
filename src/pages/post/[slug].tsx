@@ -80,7 +80,7 @@ export default function Post({ post }: { post: IPost }) {
               </div>
             </div>
           </div>
-          {post.body}
+          <div>{post.body}</div>
         </article>
         <hr className='my-4' />
         <div>
